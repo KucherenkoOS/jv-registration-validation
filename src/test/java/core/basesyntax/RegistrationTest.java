@@ -1,14 +1,15 @@
-package core.basesyntax.service;
+package core.basesyntax;
 
 import core.basesyntax.dao.StorageDaoImpl;
 import core.basesyntax.model.User;
+import core.basesyntax.service.RegistrationException;
+import core.basesyntax.service.RegistrationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class RegistrationServiceImplTest {
+class RegistrationTest {
     private RegistrationServiceImpl registrationService;
     private StorageDaoImpl storageDao;
 
