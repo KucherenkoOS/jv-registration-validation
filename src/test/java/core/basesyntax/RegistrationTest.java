@@ -1,13 +1,14 @@
 package core.basesyntax;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import core.basesyntax.dao.StorageDaoImpl;
 import core.basesyntax.model.User;
 import core.basesyntax.service.RegistrationException;
 import core.basesyntax.service.RegistrationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class RegistrationTest {
     private RegistrationServiceImpl registrationService;
@@ -48,9 +49,19 @@ class RegistrationTest {
     }
 
     @Test
-    void register_shortLogin_notOk() {
+    void register_emptyLogin_notOk() {
         User user = new User();
-        user.setLogin("abc");
+        user.setLogin("");
+        user.setPassword("abcdef");
+        user.setAge(25);
+
+        assertThrows(RegistrationException.class, () -> registrationService.register(user));
+    }
+
+    @Test
+    void register_fiveCharLogin_notOk() {
+        User user = new User();
+        user.setLogin("abcde");
         user.setPassword("abcdef");
         user.setAge(25);
 
@@ -65,7 +76,9 @@ class RegistrationTest {
         user.setAge(25);
 
         User result = registrationService.register(user);
+
         assertEquals(user, result);
+        assertEquals(user, storageDao.get("abcdef"));
     }
 
     @Test
@@ -124,7 +137,9 @@ class RegistrationTest {
         user.setAge(25);
 
         User result = registrationService.register(user);
+
         assertEquals(user, result);
+        assertEquals(user, storageDao.get("login4"));
     }
 
     @Test
@@ -151,7 +166,9 @@ class RegistrationTest {
         user.setAge(18);
 
         User result = registrationService.register(user);
+
         assertEquals(user, result);
+        assertEquals(user, storageDao.get("adultUser"));
     }
 
     @Test
